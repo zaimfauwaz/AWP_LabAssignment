@@ -4,12 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+
+    public function __construct()
+    {
+        // $this->middleware('can:manage-subjects'); This method is too simple
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::denies('manage-subjects')) {
+                abort(403, 'Access denied. You are not authorized to manage subjects.');
+            }
+            return $next($request);
+        })->except(['index', 'show']);
+    }
+
     public function index()
     {
         $subjects = Subject::paginate(10);
@@ -30,10 +45,10 @@ class SubjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'subjectId' => 'required|integer|unique:subjects,subjectId',
+            'subject_id' => 'required|integer|unique:subjects,subject_id',
             'name' => 'required|string|max:255|unique:subjects',
             'course' => 'required|string|max:255',
-            'creditHours' => 'required|integer|min:1|max:4',
+            'credit_hours' => 'required|integer|min:1|max:4',
             ]);
 
         Subject::create($request->all());
@@ -45,7 +60,7 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-        $subject = Subject::findOrFail($id);
+        $subject = Subject::where('subject_id', $id)->firstOrFail();
         return view('subject.show', compact('subject'));
     }
 
@@ -54,7 +69,7 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        $subject = Subject::findOrFail($id);
+        $subject = Subject::where('subject_id', $id)->firstOrFail();
         return view('subject.edit', compact('subject'));
     }
 
@@ -64,10 +79,10 @@ class SubjectController extends Controller
     public function update(Request $request, Subject $subject)
     {
         $request->validate([
-            'subjectId' => 'required|integer|unique:subjects,subjectId,' . $subject->id,
-            'name' => 'required|string|max:255|unique:subjects,name,' . $subject->id,
+            'subject_id' => 'required|integer|unique:subjects,subject_id,' . $subject->subject_id,
+            'name' => 'required|string|max:255|unique:subjects,name,' . $subject->subject_id,
             'course' => 'required|string|max:255',
-            'creditHours' => 'required|integer|min:1|max:4',
+            'credit_hours' => 'required|integer|min:1|max:4',
         ]);
 
         $subject->update($request->all());

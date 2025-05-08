@@ -1,4 +1,5 @@
 @extends('layouts.showform')
+@include('layouts.navbar')
 @section('title', 'Subject Data Viewer Page')
 @section('nav-title', 'Subject Data Viewer')
 
@@ -6,7 +7,7 @@
 
         <div class="mb-3">
             <label for="subjectId" class="form-label">Subject ID</label>
-            <input type="text" class="form-control" name="subjectId" id="subjectId" value="{{ $subject->subjectId }}" readonly>
+            <input type="text" class="form-control" name="subjectId" id="subjectId" value="{{ $subject->subject_id }}" readonly>
         </div>
 
         <div class="mb-3">
@@ -20,8 +21,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="subjectCreditHours" class="form-label">Total Credit Hours</label>
-            <input type="text" class="form-control" name="subjectCreditHours" id="subjectCreditHours" value="{{ $subject->creditHours }}" readonly>
+            <label for="credit_hours" class="form-label">Credit Hours</label>
+            <input type="text" class="form-control" name="credit_hours" id="credit_hours" value="{{ $subject->credit_hours }}" readonly>
         </div>
         
 

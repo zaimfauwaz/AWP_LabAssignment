@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class StudentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Gate::denies('manage-students')) {
+                abort(403, 'Access denied. You are not authorized to manage students.');
+            }
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -17,38 +29,11 @@ class StudentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('student.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'studentId' => 'required|integer|unique:students,studentId',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:students',
-            'phone' => 'required|string|min:10|max:15',
-            'course' => 'required|string|max:255',
-            'intake' => 'required|string|max:255',
-        ]);
-
-        Student::create($request->all());
-
-        return redirect()->route('student.index')->with('success', 'New student is added successfully.');
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::where('student_id', $id)->firstOrFail();
         return view('student.show', compact('student'));
     }
 
@@ -57,7 +42,7 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::where('student_id', $id)->firstOrFail();
         return view('student.edit', compact('student'));
     }
     /**
@@ -66,9 +51,9 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $request->validate([
-            'studentId' => 'required|integer|unique:students,studentId,' . $student->id,
+            'student_id' => 'required|integer|unique:students,student_id,' . $student->student_id . ',student_id',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:students,email,' . $student->id,
+            'email' => 'required|string|email|max:255|unique:students,email,' . $student->student_id . ',student_id',
             'phone' => 'required|string|min:10|max:15',
             'course' => 'required|string|max:255',
             'intake' => 'required|string|max:255',

@@ -4,9 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Lecturer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class LecturerController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Gate::denies('manage-lecturers')) {
+                abort(403, 'Access denied. You are not authorized to manage lecturers.');
+            }
+            return $next($request);
+        });
+    }
+    
     /**
      * Display a listing of the resource.
      */
@@ -17,37 +29,11 @@ class LecturerController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('lecturer.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'staffId' => 'required|integer|unique:lecturers,staffId',
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:lecturers',
-            'phone' => 'required|string|min:10|max:15',
-            'department' => 'required|string|max:255',
-        ]);
-
-        Lecturer::create($request->all());
-
-        return redirect()->route('lecturer.index')->with('success', 'New lecturer is added successfully.');
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show($id)
     {
-        $lecturer = Lecturer::findOrFail($id);
+        $lecturer = Lecturer::where('staff_id', $id)->firstOrFail();
         return view('lecturer.show', compact('lecturer'));
     }
 
@@ -56,7 +42,7 @@ class LecturerController extends Controller
      */
     public function edit($id)
     {
-        $lecturer = Lecturer::findOrFail($id);
+        $lecturer = Lecturer::where('staff_id', $id)->firstOrFail();
         return view('lecturer.edit', compact('lecturer'));
     }
     /**
@@ -65,9 +51,9 @@ class LecturerController extends Controller
     public function update(Request $request, Lecturer $lecturer)
     {
         $request->validate([
-            'staffId' => 'required|integer|unique:lecturers,staffId,' . $lecturer->id,
+            'staff_id' => 'required|integer|unique:lecturers,staff_id,' . $lecturer->staff_id . ',staff_id',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:lecturers,email,' . $lecturer->id,
+            'email' => 'required|string|email|max:255|unique:lecturers,email,' . $lecturer->staff_id . ',staff_id',
             'phone' => 'required|string|min:10|max:15',
             'department' => 'required|string|max:255',
         ]);

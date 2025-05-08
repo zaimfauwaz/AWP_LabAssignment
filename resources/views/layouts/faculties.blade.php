@@ -1,0 +1,10 @@
+<option value="Faculty of Arts & Humanities">Faculty of Arts & Humanities</option>
+<option value="Faculty of Business & Management">Faculty of Business & Management</option>
+<option value="Faculty of Computing & IT">Faculty of Computing & IT</option>
+<option value="Faculty of Engineering & Technology">Faculty of Engineering & Technology</option>
+<option value="Faculty of Natural Sciences">Faculty of Natural Sciences</option>
+<option value="Faculty of Health & Medical Sciences">Faculty of Health & Medical Sciences</option>
+<option value="Faculty of Social Sciences & Education">Faculty of Social Sciences & Education</option>
+<option value="Faculty of Law">Faculty of Law</option>
+<option value="Faculty of Architecture & Design">Faculty of Architecture & Design</option>
+<option value="Faculty of Agriculture & Environmental Studies">Faculty of Agriculture & Environmental Studies</option>

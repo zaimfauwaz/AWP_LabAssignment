@@ -1,12 +1,13 @@
 @extends('layouts.showform')
 @section('title', 'Lecturer Data Viewer Page')
+@include('layouts.navbar')
 @section('nav-title', 'Lecturer Data Viewer')
 
 @section('content')
 
         <div class="mb-3">
             <label for="staffId" class="form-label">Lecturer Staff ID</label>
-            <input type="text" class="form-control" name="staffId" id="staffId" value="{{ $lecturer->staffId }}" readonly>
+            <input type="text" class="form-control" name="staffId" id="staffId" value="{{ $lecturer->staff_id }}" readonly>
         </div>
 
         <div class="mb-3">

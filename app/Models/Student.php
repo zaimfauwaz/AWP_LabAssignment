@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'student_id';
+    public $incrementing = false;
+
     protected $fillable = [
-        'studentId',
+        'student_id',
+        'user_id',
         'name',
         'email',
         'phone',
@@ -18,8 +23,13 @@ class Student extends Model
     ];
 
     protected $casts = [
-        'studentId' => 'integer',
+        'student_id' => 'integer',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function lecturers()
     {
@@ -29,5 +39,15 @@ class Student extends Model
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'student_subject', 'student_id', 'subject_id');
+    }
+
+    public function assessments()
+    {
+        return $this->hasMany(Assessment::class, 'student_id');
     }
 }
