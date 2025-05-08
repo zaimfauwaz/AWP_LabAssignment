@@ -91,14 +91,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="date" class="form-label">Date</label>
+                            <label for="assessment_date" class="form-label">Date</label>
                             <input type="date" 
-                                   class="form-control @error('date') is-invalid @enderror" 
-                                   id="date" 
-                                   name="date" 
-                                   value="{{ old('date', $assessment->date->format('Y-m-d')) }}" 
+                                   class="form-control @error('assessment_date') is-invalid @enderror" 
+                                   id="assessment_date" 
+                                   name="assessment_date" 
+                                   value="{{ old('assessment_date', $assessment->assessment_date->format('Y-m-d')) }}" 
                                    required>
-                            @error('date')
+                            @error('assessment_date')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

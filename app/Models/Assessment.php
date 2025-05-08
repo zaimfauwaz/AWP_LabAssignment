@@ -19,7 +19,7 @@ class Assessment extends Model
         'subject_id',
         'type',
         'score',
-        'date'
+        'assessment_date'
     ];
 
     protected $casts = [
@@ -27,7 +27,7 @@ class Assessment extends Model
         'student_id' => 'integer',
         'subject_id' => 'integer',
         'score' => 'float',
-        'date' => 'date'
+        'assessment_date' => 'date'
     ];
 
     public function student()
@@ -39,4 +39,4 @@ class Assessment extends Model
     {
         return $this->belongsTo(Subject::class, 'subject_id');
     }
-} 
+}

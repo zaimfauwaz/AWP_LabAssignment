@@ -12,39 +12,31 @@
             <ul class="navbar-nav me-auto">
                 @auth
                     @if(Auth::user()->access_level == 9)
-                    
                     <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Admin Menu
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Admin Menu
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('student.index') }}">
+                                Manage Students
                             </a>
-
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('student.index') }}">
-                                    Student Manager
-                                </a>
-                                <a class="dropdown-item" href="{{ route('lecturer.index') }}">
-                                    Lecturer Manager
-                                </a>
-
-                            </div>
-                        </li>
-                    @elseif(Auth::user()->access_level == 3)
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Lecturer Menu
+                            <a class="dropdown-item" href="{{ route('lecturer.index') }}">
+                                Manage Lecturers
                             </a>
-
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('subject.index') }}">
-                                    Subjects Manager
-                                </a>
-
-                                <a class="dropdown-item" href="{{ route('assessment.index') }}">
-                                    Assessment Manager
-                                </a>
-                            </div>
-                        </li>
+                        </div>
+                    </li>
                     @endif
+
+                    @if(Auth::user()->access_level >= 3)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('subject.index') }}">Subjects</a>
+                    </li>
+                    @endif
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('assessment.index') }}">Assessments</a>
+                    </li>
                 @endauth
             </ul>
 
@@ -52,10 +44,6 @@
             <ul class="navbar-nav ms-auto">
                 <!-- Authentication Links -->
                 @guest
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('main') }}">{{ __('Home') }}</a>
-                    </li>
-
                     @if (Route::has('login'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -75,8 +63,8 @@
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
+                               onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
 

@@ -23,16 +23,10 @@ class Lecturer extends Model
 
     protected $casts = [
         'staff_id' => 'integer',
-        'credit_hours' => 'integer',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function subjects()
-    {
-        return $this->belongsToMany(Subject::class, 'lecturer_subject', 'staff_id', 'subject_id');
     }
 }

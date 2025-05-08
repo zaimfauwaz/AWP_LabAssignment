@@ -49,6 +49,65 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[byte5](https://byte5.de)**
 - **[OP.GG](https://op.gg)**
 
+## System Documentation
+
+### System Flow Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor L as Lecturer
+    actor S as Student
+    participant Auth as Authentication
+    participant AC as AssessmentController
+    participant SC as SubjectController
+    participant A as Assessment
+    participant Sub as Subject
+
+    %% Authentication Flow
+    L ->> Auth: Login
+    Auth -->> L: Access Level 3 (Lecturer Rights)
+    S ->> Auth: Login
+    Auth -->> S: Access Level 7 (Student Rights)
+
+    %% Lecturer Assessment Management
+    L ->> AC: Create Assessment
+    AC ->> Auth: Check Permissions
+    Auth -->> AC: Verify Lecturer Status
+    AC ->> A: Create New Assessment
+    A -->> AC: Assessment Created
+    AC -->> L: Success Response
+
+    %% Student View Assessment
+    S ->> AC: View Assessments
+    AC ->> Auth: Check Permissions
+    Auth -->> AC: Verify Student ID
+    AC ->> A: Get Student's Assessments
+    A -->> AC: Return Filtered Results
+    AC -->> S: Display Assessments
+
+    %% Subject Management
+    L ->> SC: Create/Edit Subject
+    SC ->> Auth: Check Permissions
+    Auth -->> SC: Verify Lecturer Status
+    SC ->> Sub: Update Subject Data
+    Sub -->> SC: Subject Updated
+    SC -->> L: Success Response
+
+    %% Assessment Score Flow
+    L ->> AC: Input Assessment Score
+    AC ->> A: Update Score
+    A -->> AC: Score Updated
+    AC -->> L: Confirmation
+    AC -->> S: Score Available
+```
+
+The sequence diagram above illustrates the main interactions between different components of the system:
+1. Authentication flow for both Lecturers and Students
+2. How Lecturers can create and manage assessments
+3. How Students can view their assessments
+4. Subject management by Lecturers
+5. The assessment scoring process
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).

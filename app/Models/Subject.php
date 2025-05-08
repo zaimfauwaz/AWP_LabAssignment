@@ -24,18 +24,8 @@ class Subject extends Model
         'credit_hours' => 'integer',
     ];
 
-    public function subjects()
+    public function assessments()
     {
-        return $this->belongsToMany(Subject::class);
-    }
-
-    public function students()
-    {
-        return $this->belongsToMany(Student::class, 'student_subject', 'subject_id', 'student_id');
-    }
-
-    public function lecturers()
-    {
-        return $this->belongsToMany(Lecturer::class, 'lecturer_subject', 'subject_id', 'staff_id');
+        return $this->hasMany(Assessment::class, 'subject_id');
     }
 }
